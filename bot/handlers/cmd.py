@@ -11,10 +11,10 @@ cmd_router = Router()
 # отрабатывает по команде /start
 @cmd_router.message(CommandStart())
 async def start_cmd(message:Message) -> None:
-    await message.answer('ку-ку')
+    await message.answer('введите Youtube url')
 
 
 # # отрабатывает по команде /help
-@cmd_router.message(Command(commands="help"))
-async def list_reminders(message:Message) -> None:
-    await message.answer('какая-то помощь :)')
+# @cmd_router.message(Command(commands="help"))
+# async def list_reminders(message:Message) -> None:
+#     await message.answer('какая-то помощь :)')

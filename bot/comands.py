@@ -4,13 +4,13 @@ from aiogram.types import BotCommand, BotCommandScopeDefault
 
 async def set_commands(bot: Bot):
     commands = [
-        BotCommand(
-            command='help',
-            description='ururu'
-        ),
+        # BotCommand(
+        #     command='help',
+        #     description='ururu'
+        # ),
         BotCommand(
             command='start',
-            description='ururu'
+            description='нажмите для старта'
         ),
     ]
 

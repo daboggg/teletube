@@ -1,2 +1,5 @@
 aiogram==3.22.0
-python-dotenv==1.2.1
+pytubefix~=10.1.1
+environs~=14.3.0
+ffmpeg~=1.4
+ffmpeg-python~=0.2.0

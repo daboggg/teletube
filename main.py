@@ -4,6 +4,7 @@ import logging
 from bot.comands import set_commands
 from bot.core import dp, bot
 from bot.handlers.cmd import cmd_router
+from bot.handlers.main import main_router
 from settings import settings
 
 
@@ -28,6 +29,7 @@ async def start():
     # подключение роутеров
     dp.include_routers(
         cmd_router,
+        main_router
     )
 
     dp.startup.register(start_bot)
@@ -36,7 +38,7 @@ async def start():
     logger.info("Бот запущен!")
 
     try:
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types(), skip_updates=True)
     finally:
         await bot.session.close()
 
