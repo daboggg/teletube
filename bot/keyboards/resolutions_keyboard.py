@@ -4,11 +4,12 @@ from pytubefix import StreamQuery
 
 
 def res_kb(streams:StreamQuery) -> InlineKeyboardMarkup:
-    res: list = [s.resolution for s in streams if not s.is_progressive]
-
     ikb = InlineKeyboardBuilder()
 
-    for r in res:
-        ikb.button(text=r, callback_data=f'!@#resolution#@!:{r}')
+    for stream in streams:
+        if stream.is_progressive:
+            ikb.button(text=f'{stream.resolution}+', callback_data=f'!@#resolution#@!:{stream.resolution}')
+        else:
+            ikb.button(text=stream.resolution, callback_data=f'!@#resolution#@!:{stream.resolution}')
 
     return ikb.adjust(3).as_markup()

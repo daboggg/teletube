@@ -61,13 +61,14 @@ async def delay_remind(callback: CallbackQuery,bot: Bot, state: FSMContext) -> N
         if video_stream.is_progressive:
             await callback.message.answer_video(video_stream.url, caption=f'{title}')
         else:
+            video_stream.download('tmp', filename='video.mp4')
+            audio_stream = all_streams.filter(mime_type='audio/mp4').order_by('abr').last()
+            audio_stream.download('tmp', filename='audio.mp4')
 
-            thread = threading.Thread(target=download_video, args=(video_stream, all_streams, title))
-            thread.start()
-            while thread.is_alive():
-                await asyncio.sleep(20)
-                await callback.message.answer('Идет загрузка...')
-
+            input_video = ffmpeg.input('tmp/video.mp4')
+            input_audio = ffmpeg.input('tmp/audio.mp4')
+            ffmpeg.concat(input_video, input_audio, v=1, a=1).output(f'tmp/{title}.mp4').run()
+            await callback.message.answer('Ожидайте...')
             await callback.message.answer_video(FSInputFile(f"tmp/{title}.mp4"), caption=f'{title}')
 
     except Exception as er:
@@ -82,13 +83,3 @@ async def delay_remind(callback: CallbackQuery,bot: Bot, state: FSMContext) -> N
 @main_router.message()
 async def error(message: Message):
     await message.answer('введите Youtube url')
-
-
-def download_video(video_stream, all_streams, title):
-    video_stream.download('tmp', filename='video.mp4')
-    audio_stream = all_streams.filter(mime_type='audio/mp4').order_by('abr').last()
-    audio_stream.download('tmp', filename='audio.mp4')
-
-    input_video = ffmpeg.input('tmp/video.mp4')
-    input_audio = ffmpeg.input('tmp/audio.mp4')
-    ffmpeg.concat(input_video, input_audio, v=1, a=1).output(f'tmp/{title}.mp4').run()
