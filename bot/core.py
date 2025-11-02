@@ -5,6 +5,6 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from settings import settings
 
-
-bot = Bot(token=settings.bots.bot_token, default=DefaultBotProperties(parse_mode='HTML', link_preview_is_disabled=True))
+session = AiohttpSession(timeout=600)
+bot = Bot(session=session, token=settings.bots.bot_token, default=DefaultBotProperties(parse_mode='HTML', link_preview_is_disabled=True))
 dp = Dispatcher(storage=MemoryStorage())
